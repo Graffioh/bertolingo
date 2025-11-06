@@ -53,3 +53,8 @@ Thumbs.db
 data/
 *.csv
 
+# Deployment files (not needed in repo)
+private_key.pem
+deploy*.sh
+install_rsync.sh
+

@@ -124,6 +124,30 @@ uv run ruff format --check .
 
 Ruff configuration is in `pyproject.toml` under `[tool.ruff]`.
 
+## Remote GPU Deployment
+
+To deploy and run training on a remote GPU server, see [DEPLOY.md](DEPLOY.md) for detailed instructions.
+
+Quick start:
+```bash
+# 1. Push code to Git repository (if not already done)
+git push origin main
+
+# 2. SSH into remote server
+ssh root@213.192.2.85 -p 40059 -i private_key.pem
+
+# 3. Clone repository
+git clone <your-repo-url>
+cd bertolingo
+
+# 4. Run setup
+./setup_and_run.sh
+
+# 5. Activate and train
+source .venv/bin/activate
+python main.py --mode train --plot
+```
+
 ## Study resources
 
 - karpathy tutorial on nanogpt
