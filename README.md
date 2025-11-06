@@ -4,6 +4,126 @@ Self-study toy project.
 
 My goal here is to understand the Transformer architecture (both encoder and decoder), to achieve English -> Italian translation.
 
+## Project Structure
+
+The project is organized into modular Python files:
+
+- `config.py` - Configuration parameters (hyperparameters, training settings)
+- `dataset.py` - Dataset loading, processing, and tokenization utilities
+- `models.py` - Model definitions (embeddings, attention, encoder, decoder, seq2seq)
+- `train.py` - Training and evaluation functions
+- `inference.py` - Translation/inference functions
+- `main.py` - Main entry point for training and using the model
+
+## Installation
+
+### Using uv (Recommended)
+
+First, install [uv](https://github.com/astral.sh/uv):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then install dependencies:
+
+```bash
+# Create virtual environment and install dependencies
+uv venv
+source .venv/bin/activate  # On macOS/Linux
+# or
+.venv\Scripts\activate  # On Windows
+uv pip install -r requirements.txt
+```
+
+The `pyproject.toml` file is included for project metadata and tool configuration (like ruff), but since this is a script-based project, we use `uv pip install` with `requirements.txt` for dependency management.
+
+### Using pip (Alternative)
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Training
+
+Train the model from scratch:
+
+```bash
+# Using uv (no need to activate venv)
+uv run python main.py --mode train --plot
+
+# Or with activated venv
+python main.py --mode train --plot
+```
+
+This will:
+- Load the Helsinki-NLP/opus-100 dataset (en-it)
+- Create a character-level tokenizer
+- Train the model for the configured number of epochs
+- Save the model to `bertolingo_model.pt`
+- Optionally plot training curves
+
+### Translation
+
+Translate text using a trained model:
+
+```bash
+uv run python main.py --mode translate --checkpoint bertolingo_model.pt --text "Hello, how are you?"
+```
+
+### Evaluation
+
+Evaluate a trained model on the validation set:
+
+```bash
+uv run python main.py --mode eval --checkpoint bertolingo_model.pt
+```
+
+## Configuration
+
+Edit `config.py` to adjust:
+- Model architecture (embedding dimensions, number of heads, blocks)
+- Training hyperparameters (learning rate, epochs, batch size)
+- Data settings (sample size, context window)
+
+## Code Quality
+
+This project uses [ruff](https://github.com/astral-sh/ruff) for linting and code formatting.
+
+### Check for issues
+
+```bash
+# Check all files
+uv run ruff check .
+
+# Check specific file
+uv run ruff check main.py
+```
+
+### Fix issues automatically
+
+```bash
+# Fix all auto-fixable issues
+uv run ruff check --fix .
+
+# Show what would be fixed without making changes
+uv run ruff check --diff .
+```
+
+### Format code (if using ruff format)
+
+```bash
+# Format all files
+uv run ruff format .
+
+# Check formatting without making changes
+uv run ruff format --check .
+```
+
+Ruff configuration is in `pyproject.toml` under `[tool.ruff]`.
+
 ## Study resources
 
 - karpathy tutorial on nanogpt
