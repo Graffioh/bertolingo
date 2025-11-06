@@ -23,8 +23,8 @@ git clone <your-repo-url>
 cd bertolingo
 
 # Run setup script
-chmod +x setup_and_run.sh
-./setup_and_run.sh
+chmod +x scripts/setup_and_run.sh
+./scripts/setup_and_run.sh
 
 # Activate virtual environment and run training
 source .venv/bin/activate

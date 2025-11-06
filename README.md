@@ -6,14 +6,26 @@ My goal here is to understand the Transformer architecture (both encoder and dec
 
 ## Project Structure
 
-The project is organized into modular Python files:
+The project is organized into a modular folder structure:
 
-- `config.py` - Configuration parameters (hyperparameters, training settings)
-- `dataset.py` - Dataset loading, processing, and tokenization utilities
-- `models.py` - Model definitions (embeddings, attention, encoder, decoder, seq2seq)
-- `train.py` - Training and evaluation functions
-- `inference.py` - Translation/inference functions
-- `main.py` - Main entry point for training and using the model
+```
+bertolingo/
+├── src/                    # Source code package
+│   ├── __init__.py
+│   ├── config.py          # Configuration parameters
+│   ├── dataset.py          # Dataset loading and processing
+│   ├── models.py           # Model definitions
+│   ├── train.py            # Training and evaluation
+│   └── inference.py        # Translation/inference
+├── scripts/                # Utility scripts
+│   └── setup_and_run.sh   # Setup script for remote server
+├── docs/                   # Documentation
+│   └── DEPLOY.md           # Deployment guide
+├── main.py                 # Main entry point
+├── requirements.txt        # Python dependencies
+├── pyproject.toml          # Project configuration
+└── README.md               # This file
+```
 
 ## Installation
 
@@ -56,6 +68,9 @@ uv run python main.py --mode train --plot
 
 # Or with activated venv
 python main.py --mode train --plot
+
+# Specify custom plot directory
+python main.py --mode train --plot --plot-dir my_plots
 ```
 
 This will:
@@ -63,7 +78,7 @@ This will:
 - Create a character-level tokenizer
 - Train the model for the configured number of epochs
 - Save the model to `bertolingo_model.pt`
-- Optionally plot training curves
+- Save training curves plot to `plots/` directory (or custom directory if specified)
 
 ### Translation
 
@@ -126,7 +141,7 @@ Ruff configuration is in `pyproject.toml` under `[tool.ruff]`.
 
 ## Remote GPU Deployment
 
-To deploy and run training on a remote GPU server, see [DEPLOY.md](DEPLOY.md) for detailed instructions.
+To deploy and run training on a remote GPU server, see [docs/DEPLOY.md](docs/DEPLOY.md) for detailed instructions.
 
 Quick start:
 ```bash
@@ -141,7 +156,8 @@ git clone <your-repo-url>
 cd bertolingo
 
 # 4. Run setup
-./setup_and_run.sh
+chmod +x scripts/setup_and_run.sh
+./scripts/setup_and_run.sh
 
 # 5. Activate and train
 source .venv/bin/activate

@@ -20,6 +20,10 @@ wheels/
 .installed.cfg
 *.egg
 
+# Package structure
+src/__pycache__/
+*.egg-info/
+
 # Virtual environments
 .venv/
 venv/
@@ -48,6 +52,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Plots
+plots/
 
 # Data (if large datasets are downloaded locally)
 data/

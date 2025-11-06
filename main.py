@@ -3,13 +3,15 @@ Main entry point for training and using the translation model
 """
 
 import argparse
+import os
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from config import (
+from src.config import (
     adam_weight_decay,
     batch_size,
     context_window,
@@ -26,10 +28,10 @@ from config import (
     print_every,
     sample_size,
 )
-from dataset import create_dataloaders, create_tokenizer, load_translation_dataset
-from inference import translate
-from models import Seq2SeqModel
-from train import evaluate_model, train_model
+from src.dataset import create_dataloaders, create_tokenizer, load_translation_dataset
+from src.inference import translate
+from src.models import Seq2SeqModel
+from src.train import evaluate_model, train_model
 
 
 def main():
@@ -57,6 +59,12 @@ def main():
         help="Path to save the trained model",
     )
     parser.add_argument("--plot", action="store_true", help="Plot training curves after training")
+    parser.add_argument(
+        "--plot-dir",
+        type=str,
+        default="plots",
+        help="Directory to save plots (default: plots)",
+    )
     args = parser.parse_args()
 
     # Load dataset and create tokenizer
@@ -127,6 +135,9 @@ def main():
 
         # Plot training curves
         if args.plot:
+            # Create plots directory if it doesn't exist
+            os.makedirs(args.plot_dir, exist_ok=True)
+
             plt.figure(figsize=(10, 6))
             epochs = list(range(1, len(train_losses) + 1))
 
@@ -140,7 +151,13 @@ def main():
             plt.title("Training and Validation Loss")
             plt.legend()
             plt.grid(True)
-            plt.show()
+
+            # Generate filename with timestamp
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            plot_filename = os.path.join(args.plot_dir, f"training_curve_{timestamp}.png")
+            plt.savefig(plot_filename, dpi=300, bbox_inches="tight")
+            print(f"\nPlot saved to '{plot_filename}'")
+            plt.close()  # Close figure to free memory
 
             print(f"\nFinal Training Loss: {train_losses[-1]:.4f}")
             if len(val_losses) > 0:
